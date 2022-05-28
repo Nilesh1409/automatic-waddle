@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div id="container">
+        <title>Work</title>
+        <input type="text" id="task" placeholder="Task...">
+        <input id="checkbox" type="checkbox" onchange="checkboxChange()" >
+        <button id="add" onclick="addData()">ADD</button>
+        <div id="showData"></div>
+    </div>
+</body>
+<script>
+    let checkbox = false;
+    function checkboxChange(){
+        if(checkbox){
+            checkbox = false;
+        }else{
+            checkbox = true;
+        }
+    }
+    
+
+    let addData = async()=>{
+        let task;
+        if(checkbox){
+         task = document.createElement("p");
+         task.textContent = document.getElementById("task").value;
+         task.style.color = "green";
+        //  task.style.background-color = "black"
+        }else{
+            task = document.createElement("p")
+            task.textContent = document.getElementById("task").value
+            task.style.color = "red";
+            // console.log(task)
+        }
+        console.log(task)
+        document.getElementById("showData").append(task);
+        try {
+            let data = {
+             "title" : document.getElementById("task").value,
+              "stetus" : checkbox,
+        };
+
+            let res=await fetch(`http://localhost:3000/user_data`,{
+        method:"POST",
+        data:JSON.stringify(data),
+        headers:{
+            "Content-Type":"application/json"
+        }
+       
+        })
+        console.log(res)
+    }catch (error) {
+             console.log(error);
+
+            
+        }
+        
+        document.getElementById("task").textContent = "";
+
+    }
+</script>
+</html>
